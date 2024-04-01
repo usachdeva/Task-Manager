@@ -5,7 +5,7 @@ let tasks;
 // Displaying live clock
 function displayTime() {
   const today = dayjs().format("DD/MM/YYYY [at] hh:mm:ss");
-  $("#live-clock").text(today);
+  $("#live-clock").text(today).css("font-weight", "bolder");
 }
 
 // Retrieve tasks and nextId from localStorage
@@ -19,8 +19,16 @@ function generateTaskId() {
 }
 
 // Todo: create a function to create a task card
-function createTaskCard(task) {
+function createToDoTask() {
+  // clearing the field
+  $("#todo-cards").text("");
+
+  let taskList = JSON.parse(localStorage.getItem("tasks"));
+
+  console.log(taskList);
   if (taskList) {
+    console.log(taskList.length);
+
     for (let task of taskList) {
       const card = $("<div>").addClass("task-card");
 
@@ -60,8 +68,8 @@ function createTaskCard(task) {
 // checking on the add button
 addTask.on("click", () => {
   // event.preventDefault();
+
   handleAddTask();
-  createTaskCard();
 });
 
 // Todo: create a function to render the task list and make cards draggable
@@ -93,7 +101,7 @@ function handleAddTask(event) {
     }, 500);
   }
 
-  function addUser() {
+  function addTaskToLocalStorage() {
     // let valid = true;
     allFields.removeClass("ui-state-error");
 
@@ -126,6 +134,10 @@ function handleAddTask(event) {
     localStorage.tasks = JSON.stringify(tasks);
 
     dialog.dialog("close");
+
+    // creating the cards
+
+    createToDoTask();
   }
   // return valid;
   // }
@@ -136,7 +148,7 @@ function handleAddTask(event) {
     width: 500,
     modal: true,
     buttons: {
-      "Add-Task": addUser,
+      "Add-Task": addTaskToLocalStorage,
     },
     close: function () {
       form[0].reset();
@@ -146,7 +158,7 @@ function handleAddTask(event) {
 
   form = dialog.find("form").on("submit", function (event) {
     event.preventDefault();
-    addUser();
+    addTaskToLocalStorage();
   });
 
   $("#add-task")
@@ -175,4 +187,5 @@ $(document).ready(function () {
   renderTaskList();
   displayTime();
   setInterval(displayTime, 1000);
+  createToDoTask();
 });

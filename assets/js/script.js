@@ -2,55 +2,66 @@ let addTask = $("#add-task");
 let form = $("#dialog-form");
 let tasks;
 
+// Displaying live clock
+function displayTime() {
+  const today = dayjs().format("DD/MM/YYYY [at] hh:mm:ss");
+  $("#live-clock").text(today);
+}
+
 // Retrieve tasks and nextId from localStorage
 let taskList = JSON.parse(localStorage.getItem("tasks"));
 let nextId = JSON.parse(localStorage.getItem("nextId"));
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
-  let taskId = Math.floor(Math.random() * 20);
+  let taskId = Math.floor(Math.random() * tasks);
   return taskId;
 }
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
-  const card = $("<div>").addClass("task-card");
+  if (taskList) {
+    for (let task of taskList) {
+      const card = $("<div>").addClass("task-card");
 
-  const cardContent = $("<figure>")
-    .addClass("card-content")
-    .css("border", "2px solid black");
+      const cardContent = $("<figure>")
+        .addClass("card-content")
+        .css("border", "2px solid black");
 
-  const section = $("<section>")
-    .addClass("card-content-header")
-    .text(title)
-    .css("border-bottom", "2px solid black");
+      const section = $("<section>")
+        .addClass("card-content-header")
+        .text(task.taskTitle)
+        .css("border-bottom", "2px solid black");
 
-  const newLine = $("<br>");
+      const newLine = $("<br>");
 
-  const article = $("<article>").addClass("<card-reminder>").text(taskDesc);
+      const article = $("<article>")
+        .addClass("<card-reminder>")
+        .text(task.taskDesc);
 
-  const dltBtn = $("<button>").addClass("delete-button").text("Delete");
+      const dltBtn = $("<button>").addClass("delete-button").text("Delete");
 
-  article.append(newLine);
-  article.append(dltBtn);
-  cardContent.append(section);
-  cardContent.append(article);
-  card.append(cardContent);
+      article.append(newLine);
+      article.append(dltBtn);
+      cardContent.append(section);
+      cardContent.append(article);
+      card.append(cardContent);
 
-  //   checking for the to-do cards
-  $("#todo-cards").append(card);
+      //   checking for the to-do cards
+      $("#todo-cards").append(card);
 
-  // deleting function
-  handleDeleteTask(event);
+      // deleting function
+      handleDeleteTask(event);
+    }
+  } else {
+  }
 }
 
 // checking on the add button
 addTask.on("click", () => {
   // event.preventDefault();
-
-  // createTaskCard();
-
-  handleAddTask(event);
+  handleAddTask();
+  createTaskCard();
 });
 
 // Todo: create a function to render the task list and make cards draggable
@@ -114,7 +125,6 @@ function handleAddTask(event) {
     // saving data to usesr's array ad It only accepts the string values
     localStorage.tasks = JSON.stringify(tasks);
 
-    alert("kldjfalks");
     dialog.dialog("close");
   }
   // return valid;
@@ -122,7 +132,7 @@ function handleAddTask(event) {
 
   dialog = $("#dialog-form").dialog({
     autoOpen: false,
-    height: 300,
+    height: 500,
     width: 500,
     modal: true,
     buttons: {
@@ -163,4 +173,6 @@ $(document).ready(function () {
   form.hide();
   generateTaskId();
   renderTaskList();
+  displayTime();
+  setInterval(displayTime, 1000);
 });

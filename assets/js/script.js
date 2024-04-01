@@ -1,9 +1,6 @@
-const addTask = $("#add-task");
-const form = $("#dialog-form");
-
-// form values
-const title = $("#task-title").value;
-const taskDesc = $("#task-description").value;
+let addTask = $("#add-task");
+let form = $("#dialog-form");
+let tasks;
 
 // Retrieve tasks and nextId from localStorage
 let taskList = JSON.parse(localStorage.getItem("tasks"));
@@ -12,7 +9,7 @@ let nextId = JSON.parse(localStorage.getItem("nextId"));
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
   let taskId = Math.floor(Math.random() * 20);
-  console.log(taskId);
+  return taskId;
 }
 
 // Todo: create a function to create a task card
@@ -53,46 +50,41 @@ addTask.on("click", () => {
 
   // createTaskCard();
 
-  handleAddTask();
+  handleAddTask(event);
 });
 
 // Todo: create a function to render the task list and make cards draggable
-function renderTaskList() {
-  let tasks;
-  if (!localStorage.tasks) {
-    tasks = [];
-  }
-  tasks = JSON.parse(taskList);
-}
+function renderTaskList() {}
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event) {
+  // form variables
   let dialog,
     form,
     taskTitle = $("#task-title"),
-    taskDueDate = $("#task-due-date"),
-    taskDescription = $("#task-description"),
-    allFields = $([]).add(taskTitle).add(taskDueDate).add(taskDescription),
+    taskDue = $("#task-due-date"),
+    taskDesc = $("#task-description"),
+    allFields = $([]).add(taskTitle).add(taskDue).add(taskDesc),
     addYourTask = $(".add-your-task");
 
-  // adding the calendar
-  $(function () {
+  //date-picker
+  $(() => {
     $("#task-due-date").datepicker({
       changeMonth: true,
       changeYear: true,
     });
   });
 
-  function updateTasks(t) {
-    addYourTask.text(t).addClass("ui-state-highlight");
+  function updateTasks(task) {
+    addYourTask.text(task).addClass("ui-state-highlight");
     setTimeout(function () {
       addYourTask.removeClass("ui-state-highlight", 1500);
     }, 500);
   }
 
   function addUser() {
-    let valid = true;
-    // allFields.removeClass("ui-state-error");
+    // let valid = true;
+    allFields.removeClass("ui-state-error");
 
     // valid = valid && checkLength( name, "username", 3, 16 );
     // valid = valid && checkLength( email, "email", 6, 80 );
@@ -102,36 +94,58 @@ function handleAddTask(event) {
     // valid = valid && checkRegexp( email, emailRegex, "eg. ui@jquery.com" );
     // valid = valid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
 
-    if (valid) {
-      createTaskCard(task);
-      // dialog.dialog("close");
+    // if (valid) {
+    // sending data to the localSttasks
+    if (!localStorage.tasks) {
+      tasks = [];
+    } else {
+      tasks = JSON.parse(localStorage.tasks);
     }
-    return valid;
+
+    // creating an object to access the data from user's input for the blog
+    var currentTask = {
+      tasksNumber: tasks.length,
+      taskTitle: taskTitle.val(),
+      taskDesc: taskDesc.val(),
+    };
+
+    tasks.push(currentTask);
+
+    // saving data to usesr's array ad It only accepts the string values
+    localStorage.tasks = JSON.stringify(tasks);
+
+    alert("kldjfalks");
+    dialog.dialog("close");
   }
+  // return valid;
+  // }
 
   dialog = $("#dialog-form").dialog({
     autoOpen: false,
     height: 300,
-    width: 350,
+    width: 500,
     modal: true,
     buttons: {
       "Add-Task": addUser,
     },
     close: function () {
       form[0].reset();
-      // allFields.removeClass("ui-state-error");
+      allFields.removeClass("ui-state-error");
     },
   });
 
   form = dialog.find("form").on("submit", function (event) {
-    // event.preventDefault();
+    event.preventDefault();
     addUser();
   });
 
-  addTask.on("click", function () {
-    dialog.dialog("open");
-  });
+  $("#add-task")
+    .button()
+    .on("click", function () {
+      dialog.dialog("open");
+    });
 }
+
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event) {
   // deleting the cards

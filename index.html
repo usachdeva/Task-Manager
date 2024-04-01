@@ -28,24 +28,23 @@
     <!-- Todo: Create a modal with a form to add tasks -->
     <!-- form -->
     <div id="dialog-form">
-      <p class="add-your-task">Add Task</p>
+      <p class="add-your-task"><strong>Add Task</strong></p>
       <form>
         <fieldset>
           <label for="task-title">Task Title</label>
-          <input type="text" name="name" id="task-title" placeholder="Enter the title"
-            class="text ui-widget-content ui-corner-all">
+          <input type="text" id="task-title" placeholder="Enter the title" class="text ui-widget-content ui-corner-all">
           <label for="task-due-date">Task Due Date</label>
-          <input type="text" name="task-due-date" id="task-due-date" class="text ui-widget-content ui-corner-all">
+          <input type="text" id="task-due-date" class="text ui-widget-content ui-corner-all">
           <label for="task-description">Task Description</label>
-          <input type="text" name="password" id="task-description" placeholder="Enter the description"
-            class="text ui-widget-content ui-corner-all">
-
+          <textarea class="text ui-widget-content ui-corner-all" id="task-description" cols="50" rows="5"
+            placeholder="Enter the description"></textarea>
           <!-- Allow form submission with keyboard without duplicating the dialog button -->
           <input type="submit" tabindex="-1" style="position:absolute; top:-1000px" value="Add Task">
         </fieldset>
       </form>
     </div>
     <!-- form-ending -->
+
     <div class="row swim-lanes text-center justify-content-between">
       <div class="col-12 col-lg-4 d-flex">
         <div id="to-do" class="card border-light mb-3 lane flex-grow-1">

@@ -1,6 +1,8 @@
 let addTask = $("#add-task");
 let form = $("#dialog-form");
 let tasks;
+let tasksInProgress;
+let tasksDone;
 
 // Displaying live clock
 function displayTime() {
@@ -25,7 +27,6 @@ function createToDoTask() {
 
   let taskList = JSON.parse(localStorage.getItem("tasks"));
 
-  console.log(taskList);
   if (taskList) {
     console.log(taskList.length);
 
@@ -43,13 +44,15 @@ function createToDoTask() {
 
       const newLine = $("<br>");
 
-      const article = $("<article>")
-        .addClass("<card-reminder>")
-        .text(task.taskDesc);
+      const article = $("<article>").addClass("card-main-content");
+
+      const para = $("<p>").addClass("card-status").text(task.taskDesc);
+      const para1 = $("<p>").addClass("card-status-date").text(task.taskDue);
 
       const dltBtn = $("<button>").addClass("delete-button").text("Delete");
 
-      article.append(newLine);
+      article.append(para);
+      article.append(para1);
       article.append(dltBtn);
       cardContent.append(section);
       cardContent.append(article);
@@ -58,10 +61,21 @@ function createToDoTask() {
       //   checking for the to-do cards
       $("#todo-cards").append(card);
 
+      // adding styles to the cards
+      // let today = dayjs();
+      // if (task.taskDue.diff(today, "day") < 0) {
+      //   cardContent.addClass("passedDue");
+      //   console.log("Project passed due date");
+      // } else if (task.taskDue.diff(today, "day") > 0) {
+      //   cardContent.addClass("futureDue");
+      //   console.log("Project due in the future");
+      // }
+
       // deleting function
       handleDeleteTask(event);
     }
   } else {
+    console.log("No tasks found");
   }
 }
 
@@ -125,6 +139,7 @@ function handleAddTask(event) {
     var currentTask = {
       tasksNumber: tasks.length,
       taskTitle: taskTitle.val(),
+      taskDue: taskDue.val(),
       taskDesc: taskDesc.val(),
     };
 

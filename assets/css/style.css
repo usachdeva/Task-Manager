@@ -9,6 +9,12 @@ body {
 
 .task-card {
   margin: 0 auto;
+  z-index: 10;
+}
+
+.card-content button {
+  margin: 10px;
+  color: red;
 }
 
 .task-card:hover {
@@ -31,4 +37,17 @@ input.text {
 .add-your-task {
   border: 1px solid transparent;
   padding: 0.3em;
+}
+
+/* styles according to the due dates */
+/* due date passed */
+.passedDue {
+  background-color: red;
+  color: white;
+}
+
+/*due in future  */
+.futureDue {
+  background-color: white;
+  color: black;
 }

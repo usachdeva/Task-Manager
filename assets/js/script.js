@@ -16,7 +16,7 @@ let nextId = JSON.parse(localStorage.getItem("nextId"));
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
-  let taskId = Math.floor(Math.random() * tasks);
+  let taskId = Math.floor(Math.random());
   return taskId;
 }
 
@@ -28,13 +28,12 @@ function createToDoTask() {
   let taskList = JSON.parse(localStorage.getItem("tasks"));
 
   if (taskList) {
-    console.log(taskList.length);
-
     for (let task of taskList) {
-      const card = $("<div>").addClass("task-card");
+      const card = $("<div>").addClass("task-card draggable");
 
       const cardContent = $("<figure>")
         .addClass("card-content")
+        .attr("id", task.tasksNumber)
         .css("border", "2px solid black");
 
       const section = $("<section>")
@@ -64,7 +63,8 @@ function createToDoTask() {
       // adding styles to the cards
       // let today = dayjs();
       // if (task.taskDue.diff(today, "day") < 0) {
-      //   cardContent.addClass("passedDue");
+      //   // cardContent.addClass("passedDue");
+      //   cardContent.attr("color", "red");
       //   console.log("Project passed due date");
       // } else if (task.taskDue.diff(today, "day") > 0) {
       //   cardContent.addClass("futureDue");
@@ -83,11 +83,31 @@ function createToDoTask() {
 addTask.on("click", () => {
   // event.preventDefault();
 
+  $("#todo-cards, #in-progress-cards, #done-cards").addClass(
+    "cards-area-color"
+  );
   handleAddTask();
 });
 
 // Todo: create a function to render the task list and make cards draggable
-function renderTaskList() {}
+function renderTaskList() {
+  createToDoTask();
+
+  console.log();
+
+  $(function () {
+    $(".draggable").draggable({
+      helper: "clone",
+      containment: "document",
+    });
+    $(".card-body #in-progress-cards").droppable({
+      drop: function (event, ui) {
+        alert("I am dropped");
+        ui.draggable.detach().appendTo($(this));
+      },
+    });
+  });
+}
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event) {
@@ -116,19 +136,8 @@ function handleAddTask(event) {
   }
 
   function addTaskToLocalStorage() {
-    // let valid = true;
     allFields.removeClass("ui-state-error");
 
-    // valid = valid && checkLength( name, "username", 3, 16 );
-    // valid = valid && checkLength( email, "email", 6, 80 );
-    // valid = valid && checkLength( password, "password", 5, 16 );
-
-    // valid = valid && checkRegexp( name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
-    // valid = valid && checkRegexp( email, emailRegex, "eg. ui@jquery.com" );
-    // valid = valid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
-
-    // if (valid) {
-    // sending data to the localSttasks
     if (!localStorage.tasks) {
       tasks = [];
     } else {

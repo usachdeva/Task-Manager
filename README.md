@@ -39,3 +39,5 @@ Deployed link: https://usachdeva.github.io/Task-Manager/
 ```
 
 ## Screenshot
+
+![alt text](assets/images/screenshot.png)

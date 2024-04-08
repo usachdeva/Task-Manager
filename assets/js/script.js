@@ -1,9 +1,8 @@
 let addTask = $("#add-task");
-let form = $("#dialog-form");
-let tasks;
-let taskId;
-let tasksInProgress;
-let tasksDone;
+let taskForm = $("#dialog-form");
+const taskTitleInputEl = $("#task-title");
+const taskDueDateEl = $("#task-due-date");
+const taskDesc = $("#task-description");
 
 // Retrieve tasks and nextId from localStorage
 let taskList = JSON.parse(localStorage.getItem("tasks"));
@@ -26,8 +25,10 @@ function generateTaskId() {
 // read tasks from storage
 // working
 function readTasksFromStorage() {
+  let taskList = JSON.parse(localStorage.getItem("tasks"));
+
   if (!taskList) {
-    localStorage.setItem("tasks", JSON.stringify([]));
+    tasks = [];
   }
   return taskList;
 }
@@ -41,36 +42,28 @@ function saveTasksToStorage(tasks) {
 // Todo: create a function to create a task card
 // working
 function createToDoTask(task) {
-  // clearing the field
-  // $("#todo-cards").text("");
-
-  // let taskList = JSON.parse(localStorage.getItem("tasks"));
-
-  // if (taskList) {
-  //   for (let task of taskList) {
-  // task-card
   const taskCard = $("<div>")
     .addClass("card task-card draggable my-3")
-    .attr("data-card-id", task.taskId);
+    .attr("data-card-id", task.id);
 
-  const cardHeader = $("<div>").addClass("card-header h4").text(task.taskTitle);
+  const cardHeader = $("<div>").addClass("card-header h4").text(task.title);
 
   const cardBody = $("<div>").addClass("card-body");
 
-  const cardDescription = $("<p>").addClass("card-text").text(task.taskDesc);
+  const cardDescription = $("<p>").addClass("card-text").text(task.desc);
 
-  const cardDueDate = $("<p>").addClass("card-text").text(task.taskDue);
+  const cardDueDate = $("<p>").addClass("card-text").text(task.due);
 
   const cardDeleteBtn = $("<button>")
     .addClass("btn btn-danger delete")
     .text("Delete")
-    .attr("data-project-id", task.taskId);
+    .attr("data-project-id", task.id);
   cardDeleteBtn.on("click", handleDeleteTask);
 
   // setting the background-color
-  if (task.taskDue && task.status !== "done") {
+  if (task.due && task.desc !== "done") {
     const today = dayjs();
-    const taskDueDate = dayjs(task.taskDue, "DD/MM/YYYY");
+    const taskDueDate = dayjs(task.due, "DD/MM/YYYY");
 
     // ? If the task is due today, make the card yellow. If it is overdue, make it red.
     if (today.isSame(taskDueDate, "day")) {
@@ -87,12 +80,10 @@ function createToDoTask(task) {
 
   return taskCard;
 }
-//   }
-// }
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
-  let tasks = readTasksFromStorage();
+  const tasks = readTasksFromStorage();
 
   // empty the existing the card lanes
   const todoList = $("#todo-cards");
@@ -106,11 +97,11 @@ function renderTaskList() {
 
   // Loop through the cards and create according to the status
   for (let task of tasks) {
-    if (task.status == "to-do") {
+    if (task.desc == "to-do") {
       todoList.append(createToDoTask(task));
-    } else if (task.status == "in-progress") {
+    } else if (task.desc == "in-progress") {
       inProgressList.append(createToDoTask(task));
-    } else if (task.status == "done") {
+    } else if (task.desc == "done") {
       doneList.append(createToDoTask(task));
     }
   }
@@ -168,12 +159,12 @@ function handleAddTask(event) {
 
     // creating an object to access the data from user's input for the blog
     var currentTask = {
-      taskId: generateTaskId,
-      taskTitle: taskTitle.val(),
-      taskDue: taskDue.val(),
-      taskDesc: taskDesc.val(),
+      title: taskTitle.val(),
+      due: taskDue.val(),
+      desc: taskDesc.val(),
     };
 
+    const tasks = readTasksFromStorage();
     tasks.push(currentTask);
 
     // saving data to usesr's array ad It only accepts the string values
@@ -185,8 +176,6 @@ function handleAddTask(event) {
 
     renderTaskList();
   }
-  // return valid;
-  // }
 
   dialog = $("#dialog-form").dialog({
     autoOpen: false,
@@ -219,23 +208,18 @@ $("#add-task").on("click", handleAddTask);
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event) {
-  // deleting the cards
-  $(".delete-button").on("click", function (event) {
-    $(this).closest(".task-card").remove(); // Remove the closest parent element with class "task-item"
+  const taskId = $(this).attr("data-card-id");
+  const tasks = readTasksFromStorage();
 
-    const taskId = $(this).attr("data-card-id");
-    const tasks = readProjectsFromStorage();
-
-    tasks.forEach((task) => {
-      if (task.id === taskId) {
-        tasks.splice(tasks.indexOf(task), 1);
-      }
-    });
-
-    saveTasksToStorage(tasks);
-
-    renderTaskList();
+  tasks.forEach((task) => {
+    if (task.id === taskId) {
+      tasks.splice(tasks.indexOf(task), 1);
+    }
   });
+
+  saveTasksToStorage(tasks);
+
+  renderTaskList();
 }
 
 // Todo: create a function to handle dropping a task into a new status lane
@@ -273,5 +257,3 @@ $(document).ready(function () {
   displayTime();
   setInterval(displayTime, 1000);
 });
-
-generateTaskId();

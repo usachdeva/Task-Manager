@@ -27,23 +27,22 @@
     <div class="container">
       <div class="text-center mb-5">
         <!-- id added on the button -->
-        <button class="btn btn-success" id="add-task" data-bs-toggle="modal" data-bs-target="#formModal">Add
+        <button class="btn btn-success" id="add-new-task" data-bs-toggle="modal" data-bs-target="#formModal">Add
           Task</button>
       </div>
       <!-- Todo: Create a modal with a form to add tasks -->
       <!-- form -->
-      <div id="dialog-form">
-        <p class="add-your-task"><strong>Add Task</strong></p>
+      <div id="dialog-form" title="Add new task">
         <form>
           <fieldset>
-            <label for="task-title">Task Title</label>
-            <input type="text" id="task-title" placeholder="Enter the title"
+            <label for="task-name">Task Title</label>
+            <input type="text" id="task-name" placeholder="Enter the title"
               class="text ui-widget-content ui-corner-all">
             <label for="task-due-date">Task Due Date</label>
             <input type="text" id="task-due-date" class="text ui-widget-content ui-corner-all">
-            <label for="task-description">Task Description</label>
-            <textarea class="text ui-widget-content ui-corner-all" id="task-description" cols="50" rows="5"
-              placeholder="Enter the description"></textarea>
+            <label for="task-status">Task Status</label>
+            <textarea class="text ui-widget-content ui-corner-all" id="task-status" cols="50" rows="5"
+              placeholder="Enter the status"></textarea>
             <!-- Allow form submission with keyboard without duplicating the dialog button -->
             <input type="submit" tabindex="-1" style="position:absolute; top:-1000px" value="Add Task">
           </fieldset>

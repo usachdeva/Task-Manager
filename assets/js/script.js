@@ -86,7 +86,7 @@ function renderTaskList() {
 
     // Loop through projects and create project cards for each status
     for (let task of tasks) {
-        if (task.status == "to do") {
+        if (task.status == "to-do") {
             todoList.append(createTaskCard(task));
         } else if (task.status == "in-progress") {
             inProgressList.append(createTaskCard(task));
@@ -133,7 +133,7 @@ function handleAddTask(event) {
             name: taskName.val(),
             dueDate: taskDueDate.val(),
             description: taskDescription.val(),
-            status: "to do",
+            status: "to-do",
         };
 
         const tasks = readTasksFromStorage();

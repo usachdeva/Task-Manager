@@ -40,4 +40,6 @@ Deployed link: https://usachdeva.github.io/Task-Manager/
 
 ## Screenshot
 
+```
 <video controls src="assets/images/demo.mp4" title="Title"></video>
+```

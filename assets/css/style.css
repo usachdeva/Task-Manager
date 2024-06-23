@@ -1,69 +1,50 @@
 body {
-  font-family: "Open Sans", sans-serif;
-  font-size: 16px;
+    font-family: "Open Sans", sans-serif;
+    font-size: 16px;
 }
 
 .swim-lanes {
-  min-height: 60vh;
+    min-height: 60vh;
 }
 
 .task-card {
-  margin: 0 auto;
-  z-index: 10;
+    margin: 0 auto;
+    z-index: 10;
 }
 
 .card-content button {
-  margin: 10px;
-  color: red;
+    margin: 10px;
+    color: red;
 }
 
 .card-content {
-  z-index: 10;
+    z-index: 10;
 }
 
 .task-card:hover {
-  cursor: grab;
+    cursor: grab;
 }
 
 /* card-body */
 .card-body,
 #target-div {
-  border: 2px solid black;
-  background-color: white;
+    background-color: white;
 }
 
 /* forms */
 input.text {
-  margin-bottom: 12px;
-  width: 95%;
-  padding: 0.4em;
+    margin-bottom: 12px;
+    width: 95%;
+    padding: 0.4em;
 }
 
 #dialog-form {
-  padding: 0;
-  border: 0;
-  margin-top: 25px;
+    padding: 0;
+    border: 0;
+    margin-top: 25px;
 }
 
 .add-your-task {
-  border: 1px solid transparent;
-  padding: 0.3em;
-}
-
-/* styles according to the due dates */
-/* due date passed */
-.passedDue {
-  background-color: red;
-  color: white;
-}
-
-/*due in future  */
-.futureDue {
-  background-color: white;
-  color: black;
-}
-
-.cards-area-color {
-  height: 100%;
-  background-color: gray;
+    border: 1px solid transparent;
+    padding: 0.3em;
 }
